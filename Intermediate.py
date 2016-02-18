@@ -25,24 +25,9 @@ sock_input.bind(server_address)
 sock_input.listen(1)
 input_connection, client_address = sock_input.accept()
 
-
-
-#-Conexion saliente---hacia el Servidor----------
-# Creando el socket TCP/IP
-#sock_output = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# Enlace de socket y puerto conexion entrante
-#server_address = ('localhost', 10001)
-#logging.debug ('Empezando a levantar %s puerto %s' % server_address)
-#sock_output.bind(server_address)
-# Escuchando conexiones entrantes
-#sock_output.listen(1)
-#output_connection, server_address = sock_output.accept()
-
 #Establece la conexion entre intermediario y server.  
 sock_output, server_address = MyTools.client_connection('localhost',10001)
 sock_output.connect(server_address)
-
-
 
 
 def client_to_server():
@@ -50,6 +35,10 @@ def client_to_server():
     while connection_active:
         try:
             data = input_connection.recv(6).decode("utf-8")
+            #if data = 'END'
+            #    sock_input.shutdown()
+            #    sock_input.close()
+            #    connection_active = False
             if random.uniform(0,1) < 0.5:
                 print(client_address)
                 print(data)
@@ -57,9 +46,10 @@ def client_to_server():
             else :
                 print('Se perdió %s' %data)
 
-        except:
-            logging.debug('Conexion terminada')
-            connection_active = False            
+        except Exception as other:
+            logging.debug('Conexion con cliente terminada %s' %other)
+            connection_active = False
+            break
 
 def server_to_client():
     connection_active = True
@@ -69,9 +59,10 @@ def server_to_client():
             print('Servidor dice: %s' %data)
             input_connection.sendall(str.encode(data))
 
-        except:
-            logging.debug('Conexion terminada')
+        except Exception as other:
+            logging.debug('Conexion con server terminada %s' %other)
             connection_active = False
+            break
     
 
 client2server = threading.Thread(None,client_to_server, 'client2server')

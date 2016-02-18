@@ -38,7 +38,8 @@ input_connection, client_address = sock_input.accept()
 
 
 data_buffer = {}
-data_size = 10000		
+data_size = 10000
+file_recive = open("Results.txt","w")
 
 while len(data_buffer) < data_size <= 10000:
     try:
@@ -61,13 +62,15 @@ while len(data_buffer) < data_size <= 10000:
         print(data_buffer)
         input_connection.sendall(str.encode(msg_chunk[0]+'-'))
         logging.debug('Enviando ACK'+msg_chunk[0])
-    except:
-        logging.debug('Error inesperado')
+        file_recive.write(data_buffer[int(msg_chunk[0])])
+    except Exception as other:
+        logging.debug('Error inesperado %s' %other)
+        break
 
 #...TO DO pasar a archivo
 #fout = open('message.txt', 'a')
 #fout.write(data_buffer[int(msg_chunk[0])])
 #fout.close()
 #-----------------------------------------------------------------#
-    
+file_recive.close()    
 input('Fin')

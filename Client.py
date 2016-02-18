@@ -25,10 +25,6 @@ except:
     print(mode)
 
 
-
-
-
-
 #...TO DO Hacer validaciones de los datos.  
 
 #Activa el modo DEBUG de ser necesario    
