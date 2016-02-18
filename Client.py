@@ -5,20 +5,15 @@ import select
 import MyTools
 from time import sleep 
 
-
-def 
-
-
-
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 exit = 'e'
 
 while exit == 'E' or exit == 'e':
     window_size = int (input("Tamaño de la ventana:"))
-    file_name = input("Nombre del archivo a enviar:")
     destination_port = int (input("Puerto destino:"))
+    file_name = open(input("Nombre del archivo a enviar:"),"r")
     timeout = float (input("Timeout:"))
-    logging.debug(' ventana: %d, archivo: %s, puerto: %d, timeout: %f' %(window_size, file_name, destination_port, timeout))
+    #logging.debug(' ventana: %d, archivo: %s, puerto: %d, timeout: %f' %(window_size, file_name, destination_port, timeout))
     #...TO DO Hacer validaciones de los datos.  
    
     #Establece la conexion entre cliente e intermediario    
@@ -27,7 +22,8 @@ while exit == 'E' or exit == 'e':
 
     
     #Se crean los paquetes que se van a enviar con un tamaño fijo.
-    packets = list(input("Mensaje a transmitir: "))
+    BARRERA = int (input("Todo listo levante el Server, luego, ingrese un numero:"))
+    packets = list(file_name.read())
     #...TO DO hacerlo vía archivo    
     message_size = len(packets)
     for number in range(message_size):
@@ -89,10 +85,10 @@ while exit == 'E' or exit == 'e':
             logging.debug('Error, ocurrió: %s' % other)
         #input('Presione para continuar')#QUITAR esto una vez esté listo todo, ÚTIL PARA DEBUGGEAR
         
-        
+
+    file_name.close()    
     print('Mensaje enviado correctamente')
-    exit = input('Mensaje entregado. Presione: "e" para enviar otro mensaje | "q"  para salir.\n>>')
-	
+    exit = input('Mensaje entregado. Presione: "e" para enviar otro mensaje | "q"  para salir.\n>>')	
 input('Fin')
 
 #Eliminados ESTO NO CREO QUE LO USEMOS ESTÁ AQUÍ X SI ACASO PERO SE PRETENDE ELIMINAR:
