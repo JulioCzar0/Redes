@@ -22,7 +22,7 @@ while exit == 'E' or exit == 'e':
 
     
     #Se crean los paquetes que se van a enviar con un tamaño fijo.
-    BARRERA = int (input("Todo listo, ingrese un numero"))
+    BARRERA = int (input("Todo listo levante el Server, luego, ingrese un numero:"))
     packets = list(file_name.read())
     #...TO DO hacerlo vía archivo    
     message_size = len(packets)
@@ -85,7 +85,8 @@ while exit == 'E' or exit == 'e':
             logging.debug('Error, ocurrió: %s' % other)
         #input('Presione para continuar')#QUITAR esto una vez esté listo todo, ÚTIL PARA DEBUGGEAR
         
-        
+
+    file_name.close()    
     print('Mensaje enviado correctamente')
     exit = input('Mensaje entregado. Presione: "e" para enviar otro mensaje | "q"  para salir.\n>>')	
 input('Fin')
