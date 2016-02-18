@@ -22,7 +22,10 @@ except:
     packets = list(input("Ingrese el mensaje que desea enviar: "))
     timeout = float (input("Timeout: "))
     mode = input("Para modo debug ingrese 'd' o presione enter para modo normal: ")
-    print(mode)
+
+
+
+
 
 
 #...TO DO Hacer validaciones de los datos.  
@@ -97,5 +100,4 @@ while next_ack < message_size:
         logging.debug('Error, ocurrió: %s' % other)        
         
 print('Mensaje enviado correctamente')
-	
 input('Fin')
