@@ -17,24 +17,24 @@ data_buffer = dict()
 
 #--------------Conexion entrante-----------------
 # Creando el socket TCP/IP
-#sock_input = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock_input = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Enlace de socket y puerto conexion entrante
-#server_address = ('localhost', 10001)
-#logging.debug ('Empezando a levantar %s puerto %s' % server_address)
-#sock_input.bind(server_address)
+server_address = ('localhost', 10001)
+logging.debug ('Empezando a levantar %s puerto %s' % server_address)
+sock_input.bind(server_address)
 
 # Escuchando conexiones entrantes
-#sock_input.listen(1)
-#input_connection, client_address = sock_input.accept()
+sock_input.listen(1)
+input_connection, client_address = sock_input.accept()
 
 #-------------Conexion saliente-------------------
 # Creando el socket TCP/IP
-sock_output = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#sock_output = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Conecta el socket en el puerto cuando el servidor esté escuchando
-server_address = ('localhost', 10001)
-sock_output.connect(server_address)
+#server_address = ('localhost', 10001)
+#sock_output.connect(server_address)
 
 
 data_buffer = {}
@@ -42,9 +42,9 @@ data_size = 10000
 
 while len(data_buffer) < data_size <= 10000:
     try:
-        #data = input_connection.recv(6).decode("utf-8")
-        data = sock_output.recv(6).decode("utf-8")
-        #print(client_address)
+        
+        data = input_connection.recv(6).decode("utf-8")
+        print(client_address)
         msg_chunk = data.split(':')
 
         #Se llena el dictionary data_buffer con key= número secuencia y value=caracter
@@ -59,7 +59,7 @@ while len(data_buffer) < data_size <= 10000:
         #Enviar ACK del paquete
         print(data_size)
         print(data_buffer)
-        sock_output.sendall(str.encode(msg_chunk[0]+'-'))
+        input_connection.sendall(str.encode(msg_chunk[0]+'-'))
         logging.debug('Enviando ACK'+msg_chunk[0])
     except:
         logging.debug('Error inesperado')

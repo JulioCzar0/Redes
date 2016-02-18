@@ -2,8 +2,8 @@ import logging
 import socket
 import threading
 import random
+import MyTools
 
-#logging.basicConfig(filename = 'debugSession.log', format='%(levelname)s:%(message)s', level=logging.DEBUG)
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 #client_port = int (input("Puerto de escucha cliente:"))
 #server_port = int (input("Puerto de escucha servidor:"))
@@ -24,16 +24,26 @@ sock_input.bind(server_address)
 # Escuchando conexiones entrantes
 sock_input.listen(1)
 input_connection, client_address = sock_input.accept()
+
+
+
 #-Conexion saliente---hacia el Servidor----------
 # Creando el socket TCP/IP
-sock_output = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#sock_output = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # Enlace de socket y puerto conexion entrante
-server_address = ('localhost', 10001)
-logging.debug ('Empezando a levantar %s puerto %s' % server_address)
-sock_output.bind(server_address)
+#server_address = ('localhost', 10001)
+#logging.debug ('Empezando a levantar %s puerto %s' % server_address)
+#sock_output.bind(server_address)
 # Escuchando conexiones entrantes
-sock_output.listen(1)
-output_connection, server_address = sock_output.accept()
+#sock_output.listen(1)
+#output_connection, server_address = sock_output.accept()
+
+#Establece la conexion entre intermediario y server.  
+sock_output, server_address = MyTools.client_connection('localhost',10001)
+sock_output.connect(server_address)
+
+
+
 
 def client_to_server():
     connection_active = True
@@ -43,7 +53,7 @@ def client_to_server():
             if random.uniform(0,1) < 0.5:
                 print(client_address)
                 print(data)
-                output_connection.sendall(str.encode(data))
+                sock_output.sendall(str.encode(data))
             else :
                 print('Se perdió %s' %data)
 
@@ -55,9 +65,8 @@ def server_to_client():
     connection_active = True
     while connection_active:
         try:
-            data = output_connection.recv(5).decode("utf-8")
-            print('Servidor dice:')
-            print(data)
+            data = sock_output.recv(5).decode("utf-8")
+            print('Servidor dice: %s' %data)
             input_connection.sendall(str.encode(data))
 
         except:
@@ -72,3 +81,5 @@ server2client.start()
 server2client.join()
 client2server.join()
 input('Fin')
+
+
